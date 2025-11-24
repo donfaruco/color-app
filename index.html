@@ -1,0 +1,193 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Color App - Login</title>
+  <style>
+    :root {
+      --card-bg: #ffffff;
+      --card-border: #e5e7eb;
+      --primary: #2563eb;
+      --text: #111827;
+      --muted: #6b7280;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, 'Helvetica Neue', Arial, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+      background: #f3f4f6; color: var(--text);
+      min-height: 100vh; display: grid; place-items: center;
+    }
+    .card {
+      width: 100%; max-width: 420px; background: var(--card-bg);
+      border: 1px solid var(--card-border); border-radius: 12px; box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+      overflow: hidden;
+    }
+    .card-header { background: #f9fafb; padding: 16px 20px; border-bottom: 1px solid var(--card-border); }
+    .card-title { margin: 0; font-size: 1.1rem; font-weight: 600; }
+    .card-body { padding: 20px; }
+    label { display: block; font-size: 0.9rem; color: var(--muted); margin-bottom: 6px; }
+    input[type="text"], input[type="password"], input[type="color"], select {
+      width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 8px; outline: none;
+      font-size: 1rem; background: #fff;
+    }
+    input[type="text"]:focus, input[type="password"]:focus, input[type="color"]:focus, select:focus {
+      border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
+    }
+    .row { display: grid; grid-template-columns: 1fr; gap: 14px; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 10px 14px; border-radius: 8px; border: 1px solid transparent;
+      background: var(--primary); color: #fff; font-weight: 600; cursor: pointer;
+    }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .error { color: #b91c1c; font-size: 0.9rem; }
+    .success { color: #065f46; font-size: 0.95rem; font-weight: 600; }
+
+    /* After-login layout */
+    .app { display: none; min-height: 100vh; }
+    .app-inner { max-width: 720px; width: 100%; margin: 0 auto; padding: 24px; }
+    .toolbar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 16px; }
+    .chip { display: inline-block; padding: 6px 10px; border-radius: 16px; background: rgba(255,255,255,0.7); border: 1px solid rgba(0,0,0,0.08); }
+    .message { padding: 14px 16px; background: rgba(255,255,255,0.85); border: 1px solid var(--card-border); border-radius: 10px; font-size: 1.05rem; }
+
+    /* Footer */
+    footer#appFooter {
+      margin-top: 24px;
+      text-align: center;
+      color: #374151;
+      opacity: 0.9;
+    }
+
+    .spacer { flex: 1; }
+  </style>
+</head>
+<body>
+  <!-- Login Card -->
+  <div class="card" id="loginCard">
+    <div class="card-header">
+      <h2 class="card-title">Color App</h2>
+    </div>
+    <div class="card-body">
+      <form id="loginForm" autocomplete="on">
+        <div class="row">
+          <div>
+            <label for="userid">User ID</label>
+            <input id="userid" name="userid" type="text" required placeholder="Enter user id" />
+          </div>
+          <div>
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" required placeholder="Enter password" />
+          </div>
+          <div>
+            <button class="btn" type="submit" id="loginBtn">Login</button>
+          </div>
+          <div id="loginError" class="error" role="alert" aria-live="polite" style="display:none"></div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- App (shown after login) -->
+  <div class="app" id="app">
+    <div class="app-inner">
+      <div class="toolbar">
+        <div class="chip">Logged in as: <span id="whoami">user</span></div>
+        <div class="spacer"></div>
+        <label for="colorPicker" style="margin:0">Choose color:</label>
+        <input id="colorPicker" type="color" value="#008000" title="Pick a color" />
+        <select id="presetSelect" title="Presets">
+          <option value="">Preset…</option>
+          <option value="#008000">Green</option>
+          <option value="#ff0000">Red</option>
+          <option value="#0000ff">Blue</option>
+          <option value="#ffff00">Yellow</option>
+          <option value="#ffa500">Orange</option>
+          <option value="#800080">Purple</option>
+        </select>
+        <button class="btn" id="logoutBtn" type="button">Logout</button>
+      </div>
+
+      <div class="message" id="statusMsg">The color is <strong><span id="colorName">green</span></strong>.</div>
+
+      <!-- Footer (visible after login) -->
+      <footer id="appFooter">
+        <small>Version: v1.0.0</small>
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    // Demo-only auth (no backend). Accept any non-empty user id and password.
+    const loginForm = document.getElementById('loginForm');
+    const loginCard = document.getElementById('loginCard');
+    const loginError = document.getElementById('loginError');
+    const app = document.getElementById('app');
+    const whoami = document.getElementById('whoami');
+    const colorPicker = document.getElementById('colorPicker');
+    const presetSelect = document.getElementById('presetSelect');
+    const colorNameSpan = document.getElementById('colorName');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    // Optional: keep version in one place
+    const APP_VERSION = 'v1.0.0';
+    document.querySelector('#appFooter small').textContent = `Version: ${APP_VERSION}`;
+
+    // Utility: derive a common color name when possible
+    const NAME_MAP = {
+      '#008000':'green','#00ff00':'lime','#ff0000':'red','#0000ff':'blue','#ffff00':'yellow',
+      '#ffa500':'orange','#800080':'purple','#ffffff':'white','#000000':'black'
+    };
+    function hexToName(hex) {
+      const h = hex.toLowerCase();
+      return NAME_MAP[h] || h;
+    }
+
+    function applyColor(hex) {
+      document.body.style.backgroundColor = hex;
+      const name = hexToName(hex);
+      colorNameSpan.textContent = name.replace('#','');
+    }
+
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const user = (document.getElementById('userid').value || '').trim();
+      const pass = (document.getElementById('password').value || '').trim();
+      if (!user || !pass) {
+        loginError.textContent = 'Please enter both user id and password.';
+        loginError.style.display = 'block';
+        return;
+      }
+      loginError.style.display = 'none';
+      whoami.textContent = user;
+      loginCard.style.display = 'none';
+      app.style.display = 'block';
+      // Default to green after login
+      applyColor('#008000');
+    });
+
+    colorPicker.addEventListener('input', (e) => {
+      applyColor(e.target.value);
+    });
+
+    presetSelect.addEventListener('change', (e) => {
+      const val = e.target.value;
+      if (val) {
+        colorPicker.value = val;
+        applyColor(val);
+      }
+    });
+
+    logoutBtn.addEventListener('click', () => {
+      app.style.display = 'none';
+      loginCard.style.display = 'block';
+      document.body.style.backgroundColor = '#f3f4f6';
+      loginForm.reset();
+      colorPicker.value = '#008000';
+      presetSelect.value = '';
+      colorNameSpan.textContent = 'green';
+    });
+  </script>
+</body>
+</html>
