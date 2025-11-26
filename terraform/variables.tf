@@ -1,5 +1,5 @@
 variable "instance_name" {
-  default = "faa-app"
+  default = "color-app"
 }
 
 variable "instance_type" {
