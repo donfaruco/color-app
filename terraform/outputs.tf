@@ -3,5 +3,5 @@ output "ec2_public_ip" {
 }
 
 output "ec2_public_dns" {
-  value = [aws_instance.color-app.public_dns, aws_instance.color-app.public_dns]
+  value = [aws_instance.color-app.public_dns, aws_instance.color-app-docker.public_dns]
 }
