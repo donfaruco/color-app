@@ -4,7 +4,7 @@ ami_id = "ami-00f46ccd1cbfb363e"
 
 instance_type = "t3.micro"
 
-instance_name = "faa-app"
+instance_name = "color-app"
 
 ssh-key = "faacicd" 
 
