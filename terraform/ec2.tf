@@ -1,4 +1,4 @@
-resource "aws_instance" "faa-app" {
+resource "aws_instance" "color-app" {
   ami                    = var.ami_id
   instance_type          = var.instance_type
   key_name               = var.ssh-key
