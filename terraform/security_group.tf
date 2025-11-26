@@ -1,5 +1,5 @@
-resource "aws_security_group" "faa-app" {
-  name        = "faa-app"
+resource "aws_security_group" "color-app" {
+  name        = "color-app"
   description = "Allow SSH"
   vpc_id      = var.vpc_id
 
