@@ -7,8 +7,8 @@ resource "aws_instance" "color-app" {
   user_data = file("scripts/userdata.sh")
 
   tags = {
-    Name = color-app
-    deployment = apache
+    Name = "color-app"
+    deployment = "apache"
   }
 }
 
@@ -21,7 +21,7 @@ resource "aws_instance" "color-app-docker" {
   user_data = file("scripts/userdata4docker.sh")
 
   tags = {
-    Name = color-app-docker
-    deployment = docker
+    Name = "color-app-docker"
+    deployment = "docker"
   }
 }
