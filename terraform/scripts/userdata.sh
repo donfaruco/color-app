@@ -11,5 +11,5 @@ sudo systemctl enable apache2
 sudo systemctl start apache2
 
 #Get App and deploy
-sudo git clone https://github.com/donfaruco/demo-for-cicd.git /opt/staging/myapp
+sudo git clone https://github.com/donfaruco/color-app.git /opt/staging/myapp
 sudo cp /opt/staging/myapp/index.html /var/www/html/index.html
