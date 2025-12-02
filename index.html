@@ -132,7 +132,7 @@
     const logoutBtn = document.getElementById('logoutBtn');
 
     // Optional: keep version in one place
-    const APP_VERSION = 'v1.0.0';
+    const APP_VERSION = 'v1.1.0';
     document.querySelector('#appFooter small').textContent = `Version: ${APP_VERSION}`;
 
     // Utility: derive a common color name when possible
@@ -164,8 +164,8 @@
       whoami.textContent = user;
       loginCard.style.display = 'none';
       app.style.display = 'block';
-      // Default to green after login
-      applyColor('#008000');
+      // Default to Red after login
+      applyColor('#FF0000');
     });
 
     colorPicker.addEventListener('input', (e) => {
