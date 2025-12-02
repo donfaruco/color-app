@@ -100,7 +100,7 @@
         <select id="presetSelect" title="Presets">
           <option value="">Preset…</option>
           <option value="#008000">Green</option>
-          <option value="#ff0000">Red</option>
+          // <option value="#ff0000">Red</option>
           <option value="#0000ff">Blue</option>
           <option value="#ffff00">Yellow</option>
           <option value="#ffa500">Orange</option>
@@ -132,7 +132,7 @@
     const logoutBtn = document.getElementById('logoutBtn');
 
     // Optional: keep version in one place
-    const APP_VERSION = 'v1.6.0';
+    const APP_VERSION = 'v1.11.0';
     document.querySelector('#appFooter small').textContent = `Version: ${APP_VERSION}`;
 
     // Utility: derive a common color name when possible
@@ -165,7 +165,7 @@
       loginCard.style.display = 'none';
       app.style.display = 'block';
       // Default to Red after login (Modify here for Demo)
-      applyColor('#FF0000');
+      applyColor('#ffa500');
     });
 
     colorPicker.addEventListener('input', (e) => {
